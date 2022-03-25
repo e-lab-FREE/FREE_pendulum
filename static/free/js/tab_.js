@@ -5,7 +5,7 @@ Please see semantic ui webpage*/
 // tab
 $('.menu .item').tab();  
 
-// console.log('Tab List : ', exp_parameters);
+console.log('Tab List : ', exp_parameters);
 
 
 if (exp_parameters.length > 0) {

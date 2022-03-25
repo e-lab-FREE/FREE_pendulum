@@ -6,10 +6,12 @@
 
 {% block head %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.6.4/components/range.min.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.4/components/slider.css">
 {% endblock %}  
 
 {% block tabheaders %}
-    <a class="item" data-tab="configuration">{% trans 'Configuration'%}</a>
+ <a class="item" data-tab="configuration">{% trans 'Configuration'%}</a>
     {% if final_result.id != None %}
       <a class="item " data-tab="results">{% trans 'Results'%}</a>
     {% else %}  
@@ -18,46 +20,47 @@
 
 {% endblock %}
 {% block tabs %}
-    <!-- Begin of the configuration tab-->
-    <div class="ui bottom attached tab segment"  data-tab="configuration">
-        <div class="ui two column stackable center aligned grid ">
+     <!-- Begin of the configuration tab-->
+   <div class="ui bottom attached tab segment"  data-tab="configuration">
+     <p class="ui dividing header"><em>Pendulum configuration data</em></p>
+        <div class="ui two column stackable  aligned grid ">
             <div class="column">
-                <h2>{% trans 'Initial Displacement'%}</h2>
+                <legend>{% trans 'Initial Displacement (cm)'%}</legend>
                 <div class="ui segment">
                     {% if final_result.id == None %}
-                        <div class="ui range" id="range1"></div>
+                        <div class="ui labeled range " id="range1"></div>
                         <br></br>
                         <div class="ui input">
-                            <input type="text" id="DeltaX">
+                            <input type="text" id="deltaX">
                         </div>
                     {% else %}
                         <div class="ui disabled range" id="range1"></div>
                         <br></br>
                         <div class="ui input">
-                            <input type="text" id="DeltaX" disabled>
+                            <input type="text" id="deltaX" disabled>
                         </div>
   
                     {% endif %}
                 </div> 
-                <h2>{% trans 'Number of Samples N'%}</h2>
+                <legend>{% trans 'Number of Samples N'%}</legend>
                 <div class="ui segment">
                     {% if final_result.id == None %}
                         <div class="ui labeled range" id="range2"></div>
                         <br></br>
                         <div class="ui input">
-                            <input type="text" id="Samples">
+                            <input type="text" id="samples">
                         </div>
                     {% else %}
-                        <div class="ui disabled labeled range" id="range2"></div>
+                        <div class="ui disabled  range" id="range2"></div>
                         <br></br>
                         <div class="ui input">
-                            <input type="text" id="Samples" disabled>
+                            <input type="text" id="samples" disabled>
                         </div>
                     {% endif %}    
                 </div>   
                 <div class="ui hidden divider"></div>
                 {% if final_result.id == None %}
-                    <div class="ui blue button" onclick="queue()">{% trans 'Save'%}</div>
+                    <div class="ui blue button" onclick="queue()">{% trans 'save'%}</div>
                     {% comment %} <a href="execution">  {% endcomment %}
                     <div class="ui green button" onclick="start()">{% trans 'Submit'%}</div>
                     {% comment %} </a> {% endcomment %}
@@ -168,6 +171,8 @@
                 </tbody>
             </table>
         </div>
+		
+		
     {% endif %}
     <!-- End of the results tab-->
 {% endblock %}
@@ -177,15 +182,21 @@
         // PUT YOUR CUSTOM JAVASCRIPT HERE
 
         // You can access apparatus_type config like this
-        config = JSON.parse(document.getElementById('experiment-config').textContent);
+        config = JSON.parse(document.getElementById('execution-config').textContent);
         console.log(config);
-        console.log(config.protocols);
-        var exp_parameters = [];
-        if (config.protocols !== null && config.protocols.length > 1) {
-            exp_parameters = config.protocols[0].exp_paremeters
-            // console.log(exp_parameters);
-        }
+        console.log(Object.keys(config.protocol.config.properties).length);
 
+        var exp_parameters = [];
+        if (config.protocols !== null && Object.keys(config.protocol.config.properties).length > 1) {
+            for (let ii = 0; ii<Object.keys(config.protocol.config.properties).length;ii++ )
+            {
+                key = Object.keys(config.protocol.config.properties)[ii];
+                console.log(config.protocol.config.properties[key]);
+                exp_parameters[ii] = {"min_val": config.protocol.config.properties[key].minimum,"max_val":config.protocol.config.properties[key].maximum,"step": config.protocol.config.properties[key].multipleOf,"start": config.protocol.config.properties[key].default,"nome": key};
+            };
+
+            console.log(exp_parameters);
+        }
         // If the url contains execution id at the end, the execution information will be also injected into the page
         execution_element = JSON.parse(document.getElementById('execution-config').textContent);
         if (execution_element.status === 'F') {
@@ -211,8 +222,7 @@
         console.log({{object.protocol_id}})
     </script>
 
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.6.4/components/range.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.6.4/components/range.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables.net-responsive/2.2.8/dataTables.responsive.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/tab.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables.net-se/1.11.3/dataTables.semanticui.min.js"></script>
@@ -222,8 +232,7 @@
 
     <script>
         var selectedStream =  document.getElementById('video-config').textContent;
-        //server = "http://" + window.location.hostname + ":8088/janus";
-        server = "http://elab1.tecnico.ulisboa.pt:8088/janus";
+        server = "http://elab1.ist.utl.pt:8088/janus";
     </script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/8.0.0/adapter.min.js" ></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
