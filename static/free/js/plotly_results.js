@@ -31,8 +31,8 @@ var output_data = [];
 var receive_error_velocity = [];
 var receive_error_period = [];
 var mytable = [];
-var DeltaX = document.getElementById('DeltaX');
-var Samples = document.getElementById('Samples');
+var DeltaX = document.getElementById('deltaX');
+var Samples = document.getElementById('samples');
 let save_table = ""
 
 function getCookie(name) 
@@ -88,10 +88,10 @@ function Show_data(){
 
 function queue() {
   // get inputs values from the client side
-  if ($("#DeltaX").val() !== undefined)
-    DeltaX = $("#DeltaX").val();
-  if ($("#Samples").val() !== undefined)
-    Samples = $("#Samples").val();
+  if ($("#deltaX").val() !== undefined)
+    DeltaX = $("#deltaX").val();
+  if ($("#samples").val() !== undefined)
+    Samples = $("#samples").val();
 
   
   data_send = {"id":new_execution.id,"apparatus": apparatus, "protocol": protocol, "config": {"deltaX": parseInt (DeltaX), "samples":parseInt (Samples)}}
@@ -99,6 +99,7 @@ function queue() {
   HEADERS = {
     "X-CSRFToken": getCookie("csrftoken"),
     }
+  execution_id = new_execution.id
   var endpoint="/api/v1/execution/"+new_execution.id;
   // print out
   console.log('JSON : ' +  endpoint);
@@ -122,7 +123,7 @@ function queue() {
     data: data_send,
   }).then(response => {
     console.log('plotly_results', response);
-    execution_id = response.data.id
+    
   }).catch(console);
 
 
