@@ -83,6 +83,18 @@ function Show_data(){
 
 }
 
+function toggleDisable(){
+            //$("#startButton").toggleClass("disabled");
+            $("#startButton").removeClass("disabled");
+
+}
+
+function disableButton(){
+            //$("#startButton").toggleClass("disabled");
+            $("#startButton").addClass("disabled");
+
+}
+
 
 // This function receive as input the parameters and send them to the experiment and send back the data to browser*/
 
@@ -123,7 +135,7 @@ function queue() {
     data: data_send,
   }).then(response => {
     console.log('plotly_results', response);
-    
+    toggleDisable();
   }).catch(console);
 
 
