@@ -6,6 +6,11 @@ Please see semantic ui webpage*/
 $('.menu .item').tab();  
 
 console.log('Tab List : ', exp_parameters);
+function disableButton(){
+            //$("#startButton").toggleClass("disabled");
+            $("#startButton").addClass("disabled");
+
+}
 
 
 if (exp_parameters.length > 0) {
@@ -15,8 +20,13 @@ if (exp_parameters.length > 0) {
      max: parseInt (exp_parameters[0].max_val),
      step: parseInt (exp_parameters[0].step),
      start: parseInt (exp_parameters[0].start),
-     input: '#'+exp_parameters[0].nome
- });
+     input: '#'+exp_parameters[0].nome,
+     onChange: function(value, meta) {
+		if(meta.triggeredByUser) {
+			$("#startButton").addClass("disabled");
+
+		}
+     } });
 }
 
 if (exp_parameters.length > 1) {
@@ -26,8 +36,13 @@ if (exp_parameters.length > 1) {
      max: parseInt (exp_parameters[1].max_val),
      step: parseInt (exp_parameters[1].step),
      start:  parseInt (exp_parameters[1].start),
-     input: '#'+exp_parameters[1].nome
-   });
+     input: '#'+exp_parameters[1].nome,
+     onChange: function(value, meta) {
+		if(meta.triggeredByUser) {
+			$("#startButton").addClass("disabled");
+
+		}
+     } });
 }
 
 // Initial displacement

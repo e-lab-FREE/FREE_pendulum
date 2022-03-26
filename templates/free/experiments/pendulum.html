@@ -28,10 +28,10 @@
                 <legend>{% trans 'Initial Displacement (cm)'%}</legend>
                 <div class="ui segment">
                     {% if final_result.id == None %}
-                        <div class="ui labeled range " id="range1"></div>
+                        <div class="ui labeled range "  id="range1" ></div>
                         <br></br>
-                        <div class="ui input">
-                            <input type="text" id="deltaX">
+                        <div class="ui input" >
+                            <input type="text" id="deltaX" onchange="disableButton()">
                         </div>
                     {% else %}
                         <div class="ui disabled range" id="range1"></div>
@@ -45,10 +45,10 @@
                 <legend>{% trans 'Number of Samples N'%}</legend>
                 <div class="ui segment">
                     {% if final_result.id == None %}
-                        <div class="ui labeled range" id="range2"></div>
+                        <div class="ui labeled range" id="range2" ></div>
                         <br></br>
                         <div class="ui input">
-                            <input type="text" id="samples">
+                            <input type="text" id="samples" onchange="disableButton()">
                         </div>
                     {% else %}
                         <div class="ui disabled  range" id="range2"></div>
@@ -62,7 +62,7 @@
                 {% if final_result.id == None %}
                     <div class="ui blue button" onclick="queue()">{% trans 'save'%}</div>
                     {% comment %} <a href="execution">  {% endcomment %}
-                    <div class="ui green button" onclick="start()">{% trans 'Submit'%}</div>
+                    <div class="ui disabled green button" onclick="start()" id="startButton">{% trans 'Submit'%}</div>
                     {% comment %} </a> {% endcomment %}
                     <div class="ui red button">{% trans 'Clear All'%}</div>
                 {% else %}
