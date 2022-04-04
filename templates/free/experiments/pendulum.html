@@ -6,8 +6,24 @@
 
 {% block head %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.6.4/components/range.min.css">
+<style>
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+</style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.4/components/slider.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.semanticui.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.semanticui.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables.net-buttons-se/1.5.3/buttons.semanticui.min.css">
+
 {% endblock %}  
 
 {% block tabheaders %}
@@ -21,46 +37,79 @@
 {% endblock %}
 {% block tabs %}
      <!-- Begin of the configuration tab-->
-   <div class="ui bottom attached tab segment"  data-tab="configuration">
-     <p class="ui dividing header"><em>Pendulum configuration data</em></p>
-        <div class="ui two column stackable  aligned grid ">
-            <div class="column">
-                <legend>{% trans 'Initial Displacement (cm)'%}</legend>
+   <div  class="ui bottom attached tab segment"  data-tab="configuration">
+    
+    <div class="ui equal width  aligned padded grid" >
+      <div class="row">
+        <div class="column ">
+          <p class="ui huge header">{% trans 'Pendulum configuration data'%}</p>
+         </div>
+          <div class="column ">
+            <div class="inline fields">
+                <div class="field">
+                    <label style="padding-right:10px">Name of execution: </label>
+                      <div class="ui input" >
+                        <input type="text" id="name-of-exection"  placeholder="New Execution">
+                      </div>
+                      {% if final_result.id == None %}
+                      {% else %}
+                        <div class="ui blue button" onclick="save_name()">{% trans 'Save'%}</div>
+                      {% endif %}
+                </div>
+                <!--<div class="field">
+                    <div class="ui blue button">Test</div>
+                </div>-->
+            </div>
+          </div>
+        </div>
+	
+       </div>
+       <div class="ui divider"></div>        
+       <div id="configuration-input" class="ui equal width center aligned padded grid">
+  	    <div class="row">
+              <div class="column">
+                <legend> <h3>{% trans 'Initial Displacement (cm)'%}</h3></legend>
                 <div class="ui segment">
                     {% if final_result.id == None %}
                         <div class="ui labeled range "  id="range1" ></div>
                         <br></br>
                         <div class="ui input" >
-                            <input type="text" id="deltaX" onchange="disableButton()">
+                            <input  type="number" id="deltaX" onchange="disableButton()">
                         </div>
                     {% else %}
                         <div class="ui disabled range" id="range1"></div>
                         <br></br>
                         <div class="ui input">
-                            <input type="text" id="deltaX" disabled>
+                            <input  type="number" id="deltaX" disabled>
                         </div>
   
                     {% endif %}
-                </div> 
-                <legend>{% trans 'Number of Samples N'%}</legend>
+                </div>
+              </div>
+              <div class="column">
+                <legend><h3>{% trans 'Number of Samples N'%}</h3></legend>
                 <div class="ui segment">
                     {% if final_result.id == None %}
                         <div class="ui labeled range" id="range2" ></div>
                         <br></br>
                         <div class="ui input">
-                            <input type="text" id="samples" onchange="disableButton()">
+                            <input  type="number" id="samples" onchange="disableButton()">
                         </div>
                     {% else %}
                         <div class="ui disabled  range" id="range2"></div>
                         <br></br>
                         <div class="ui input">
-                            <input type="text" id="samples" disabled>
+                            <input t type="number" id="samples" disabled>
                         </div>
                     {% endif %}    
-                </div>   
-                <div class="ui hidden divider"></div>
+                </div>
+              </div>
+           </div>
+           <div class="ui hidden divider"></div>
+           <div class="row">   
+                <div class="column">
                 {% if final_result.id == None %}
-                    <div class="ui blue button" onclick="queue()">{% trans 'save'%}</div>
+                    <div class="ui blue button" onclick="queue(config_input)">{% trans 'Save'%}</div>
                     {% comment %} <a href="execution">  {% endcomment %}
                     <div class="ui disabled green button" onclick="start()" id="startButton">{% trans 'Submit'%}</div>
                     {% comment %} </a> {% endcomment %}
@@ -68,9 +117,9 @@
                 {% else %}
 
                 {% endif %}
-            </div>
-                
-        </div>
+                </div>
+           </div>   
+       </div>
     </div>
     <!-- End of the configuration tab-->
 
@@ -102,7 +151,7 @@
                     <div style="width: 550px; height: 500px" id="myplot2"></div>
                 </div>
             </div>
-        <table id="table_result_total" class="ui celled padded table"  cellspacing="0"  style="width:100%">
+        <table id="table_result_1" class="ui xinverted unstackable celled scrolling content table mytable"  cellspacing="0"  style="width:100%">
             <thead>
                 <tr>
                     <th>{% trans "Sample Number" %}</th>
@@ -148,7 +197,7 @@
                     <div style="width: 550px; height: 500px" id="myplot2"></div>
                 </div>
             </div>
-        <table id="table_result_1" class="ui celled padded table"  cellspacing="0"  style="width:100%">
+        <table id="table_result_1"  class="ui xinverted unstackable celled scrolling content table mytable"  cellspacing="0"  style="width:100%">
             <thead>
                 <tr>
                     <th>{% trans "Sample Number" %}</th>
@@ -178,6 +227,19 @@
 {% endblock %}
 
 {% block script %}
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.6.4/components/range.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables-buttons/2.2.2/js/dataTables.buttons.min.js" integrity="sha512-GX4FkKxE4Wy3gbA07S8oEpK9VTZEFdEhkuxaiql/cHx7g1itJuLNUNdV+VFN1oq1yKiSIXjhprIPQe7SSMN78A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables.net-responsive/2.2.8/dataTables.responsive.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/tab.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables.net-se/1.11.3/dataTables.semanticui.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="{% static 'free/js/tab_.js' %}"></script>
+    <script src="{% static 'free/js/plotly_results.js' %}"></script>
+    <script src="{% static 'free/js/configuration-input.js' %}"></script>
+    <script src="{% static 'free/js/export_table_pendulum.js' %}"></script>
+
     <script type='text/javascript'>
         // PUT YOUR CUSTOM JAVASCRIPT HERE
 
@@ -205,7 +267,7 @@
             // console.log(execution.config)
             final_result = document.getElementById('final-result');
             finalresult = JSON.parse(final_result.textContent);
-            // console.log('Final Result : ', finalresult.id);
+            console.log('Final Result : ', finalresult.id);
             if (final_result.id !== 'undefined') {
                 exp_parameters[0].start = execution_element.config.deltaX;
                 exp_parameters[1].start = execution_element.config.samples;
@@ -220,12 +282,44 @@
             // Here you will probably create the execution through the REST API
         }
         console.log({{object.protocol_id}})
+        const config_input = new ConfigurationInput("configuration-input");
+function test_1() {
+			config_input.findConfigInput();
+			console.log("OUT : ", config_input.processElements());
+		}
+function save_name(){
+  console.log("OUT : test");
+  data_send = finalresult
+  data_send["name"] =  $("#name-of-exection").val();
+  // '{"experiment_name": "Pendulo", "config_experiment": {"DeltaX":'+ String(DeltaX)+', "Samples":'+String(Samples)+' }}'
+  HEADERS = {
+    "X-CSRFToken": getCookie("csrftoken"),
+    }
+  execution_id = new_execution.id
+  var endpoint="/api/v1/execution/"+new_execution.id;
+  // print out
+  console.log('JSON : ' +  endpoint);
+  console.log(data_send);
+  axios({
+    method: 'patch', //you can set what request you want to be
+    url: endpoint,
+    headers: HEADERS,
+    data: data_send,
+  }).then(response => {
+    console.log('plotly_results', response);
+    toggleDisable();
+  }).catch(console);
+
+
+}
+
     </script>
 
    <script src="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.6.4/components/range.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables.net-responsive/2.2.8/dataTables.responsive.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/tab.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables.net-se/1.11.3/dataTables.semanticui.min.js"></script>
+    
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="{% static 'free/js/tab_.js' %}"></script>
     <script src="{% static 'free/js/plotly_results.js' %}"></script>
@@ -234,6 +328,38 @@
         var selectedStream =  document.getElementById('video-config').textContent;
         server = "http://elab1.ist.utl.pt:8088/janus";
     </script>
+
+
+
+
+
+
+
+ 
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.8/semantic.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.4/components/slider.js"></script>
+
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables.net-responsive/2.2.8/dataTables.responsive.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/tab.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables.net-se/1.11.3/dataTables.semanticui.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables.net-responsive/2.2.8/dataTables.responsive.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/tab.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables.net-se/1.11.3/dataTables.semanticui.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables.net-responsive/2.2.8/dataTables.responsive.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/components/tab.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables.net-se/1.11.3/dataTables.semanticui.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/8.0.0/adapter.min.js" ></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
     <script type="text/javascript" src="{% static 'free/js/janus.js' %}" ></script>

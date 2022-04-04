@@ -98,15 +98,19 @@ function disableButton(){
 
 // This function receive as input the parameters and send them to the experiment and send back the data to browser*/
 
-function queue() {
+function queue(config) {
   // get inputs values from the client side
   if ($("#deltaX").val() !== undefined)
     DeltaX = $("#deltaX").val();
   if ($("#samples").val() !== undefined)
     Samples = $("#samples").val();
+  if ($("#name-of-exection").val() !== undefined)
+    name = $("#name-of-exection").val();
+ 
 
-  
-  data_send = {"id":new_execution.id,"apparatus": apparatus, "protocol": protocol, "config": {"deltaX": parseInt (DeltaX), "samples":parseInt (Samples)}}
+  config_input.findConfigInput();
+  data_send = new_execution
+  data_send["config"] = config.processElements()
   // '{"experiment_name": "Pendulo", "config_experiment": {"DeltaX":'+ String(DeltaX)+', "Samples":'+String(Samples)+' }}'
   HEADERS = {
     "X-CSRFToken": getCookie("csrftoken"),
