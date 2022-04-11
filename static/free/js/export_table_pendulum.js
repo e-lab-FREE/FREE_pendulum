@@ -25,7 +25,6 @@ $(document).ready(function(){
 		});
 		var table = $('#table_result_1').DataTable({
 	        lengthChange: false,
-                searching: false,
 	        buttons: [ 'copy',
 			{
                 extend: 'csv',

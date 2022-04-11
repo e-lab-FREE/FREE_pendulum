@@ -20,25 +20,25 @@ msgstr ""
 
 #: static/free/js/plotly_results.js:371
 msgid "Linear velocity vs sample number"
-msgstr ""
+msgstr "Velocidade Linear vs amostra"
 
 #: static/free/js/plotly_results.js:380 static/free/js/plotly_results.js:467
 #: static/free/js/plotly_results.js:524
 msgid "# Samples"
-msgstr ""
+msgstr "Número de amostras"
 
 #: static/free/js/plotly_results.js:391
 msgid "Linear velocity [m/s]"
-msgstr ""
+msgstr "Velocidade Linear [m/s]"
 
 #: static/free/js/plotly_results.js:419 static/free/js/plotly_results.js:445
 msgid "Histogram of the pendulum periods"
-msgstr ""
+msgstr "Histogtrama dos períodos"
 
 #: static/free/js/plotly_results.js:458 static/free/js/plotly_results.js:533
 msgid "Period [s]"
-msgstr ""
+msgstr "Período [s]"
 
 #: static/free/js/plotly_results.js:514
 msgid "Period vs. number of samples"
-msgstr ""
+msgstr "Período vs número de amostras"

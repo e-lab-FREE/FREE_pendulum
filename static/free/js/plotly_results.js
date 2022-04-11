@@ -1,6 +1,6 @@
 /* Javascript used to start an experiment and showns graphics in real time
 
-Developed by Jos√© Veiga and Pedro Rosa
+Developed by JosÈ Veiga and Pedro Rosa
 
 Last updated out 9 11:12 , 2021*/
 
@@ -34,6 +34,8 @@ var mytable = [];
 var DeltaX = document.getElementById('deltaX');
 var Samples = document.getElementById('samples');
 let save_table = ""
+
+let table = "";
 
 function getCookie(name) 
 {
@@ -100,17 +102,20 @@ function disableButton(){
 
 function queue(config) {
   // get inputs values from the client side
-  if ($("#deltaX").val() !== undefined)
-    DeltaX = $("#deltaX").val();
-  if ($("#samples").val() !== undefined)
-    Samples = $("#samples").val();
-  if ($("#name-of-exection").val() !== undefined)
-    name = $("#name-of-exection").val();
- 
-
   config_input.findConfigInput();
   data_send = new_execution
   data_send["config"] = config.processElements()
+  
+
+  if ($("#name-of-exection").val() !== undefined){
+    name = $("#name-of-exection").val();
+    data_send["name"] = name 
+  }
+  else{
+    data_send["name"] = ""
+  }
+ 
+
   // '{"experiment_name": "Pendulo", "config_experiment": {"DeltaX":'+ String(DeltaX)+', "Samples":'+String(Samples)+' }}'
   HEADERS = {
     "X-CSRFToken": getCookie("csrftoken"),
@@ -143,14 +148,79 @@ function queue(config) {
   }).catch(console);
 
 
-  // n√£o quero fazer pontos no bot√£o start!
-  // Tenho que mudar alguma coisa aqui pois ainda n√£o faz o que realmente quero
+  // n„o quero fazer pontos no bot„o start!
+  // Tenho que mudar alguma coisa aqui pois ainda n„o faz o que realmente quero
   // getData(); 
   
 
 
 }
 
+
+const update = () => {
+  var currentDate = new Date()
+  var seconds = currentDate.getSeconds();
+    var minutes = currentDate.getMinutes();
+    var hour = currentDate.getHours();
+    var day = currentDate.getDate()
+    var month = currentDate.getMonth() + 1  // starts from zero
+    var year = currentDate.getFullYear()
+
+   var d = day + "-" + month + "-" + year  + "  " + hour + "_" + minutes + "_" + seconds;
+
+
+  // - MESSAGES
+  $('.message .close').on('click', function() {
+      $(this)
+        .closest('.message')
+        .transition('fade')
+      ;
+  });
+  // - DATATABLES
+  table = $('#table_result_runtime').DataTable({
+        lengthChange: false,
+        buttons: [ 'copy',
+    {
+              extend: 'csv',
+              title: 'Pendulum_results__' + d  
+          },
+    {
+              extend: 'excel',
+              title: 'Pendulum_results__' +d
+          },
+    
+    ]
+    });
+    table.buttons().container().appendTo(
+      $('div.eight.column:eq(0)', table.table().container()) 
+    );
+
+}
+
+$(document).ready(function(){
+  update();
+
+});
+
+let html_tabele = document.getElementById("table_result").innerHTML;
+
+const writeLineOnTable = (keys,response) => {
+  table.destroy();
+  html_tabele += `<tr>`;
+  // table.destroy();
+  keys.forEach(function(data) 
+  {
+    
+    html_tabele += `<td>` + response.data[0].value[data]  +  `</td>`;
+    
+    
+  });
+  html_tabele += `</tr>`;
+  save_table = html
+// assumes <div id="result"></div>
+   document.getElementById("table_result").innerHTML = html_tabele;
+   update();
+}
 
 function myStopFunction() {
   clearInterval(Results);
@@ -182,7 +252,7 @@ function getData(){
         console.log('ola', response.data[0].value);
         res = Object.keys(response.data[0].value);
         buildPlot1(res);
-        buildPlot2(res);  // grafico de temperatura n√£o 
+        buildPlot2(res);  // grafico de temperatura n„o 
         buildPlot3(res);
         last_result_id = response.data[0].id+1
         frist = 1;
@@ -191,6 +261,7 @@ function getData(){
     console.log(response);
     // check for ending of the experiment
     if (response.data.result_type !== 'undefined' && response.data[0].result_type === 'f'){
+        //$('#table_result_1').DataTable().ajax.reload();
         myStopFunction();
     }
     else{
@@ -207,23 +278,13 @@ function getData(){
         Plotly.extendTraces('myplot2', {x: [[response.data[0].value.Sample_number]],y: [[response.data[0].value.Val1]],
         'error_y.array': [[receive_error_period]]}, [0]);
   
+        
+        html = save_table
+        // console.log("ola",save_table) 
+        keys  = Object.keys(response.data[0].value);
+        
+        writeLineOnTable(keys,response)
 
-      html = save_table
-      // console.log("ola",save_table) 
-      keys  = Object.keys(response.data[0].value);
-      html += "<tr>";
-      keys.forEach(function(data) 
-      {
-        // console.log("pppp ",data)
-        
-        html += "<td>" + response.data[0].value[data]  +  "</td>";
-        
-        
-      });
-      html += "</tr>";
-      save_table = html
-  // assumes <div id="result"></div>
-         document.getElementById("table_result").innerHTML = html;
         //  console.log("coisas html table ",html);
       }
       // getData();
@@ -239,7 +300,7 @@ function getData(){
 
 function myStartFunction() {
   Results = setInterval(getData,500)
-  console.log("Valor da fun√ß√£o");
+  console.log("Valor da funÁ„o");
   console.log(Results);
 }
 
@@ -373,7 +434,7 @@ function buildPlot1(res) {
 
     var layout = {
       title: gettext('Linear velocity vs sample number'),
-      height: 500, // os valores s√£o todos em pixels
+      height: 500, // os valores s„o todos em pixels
       font: {
       family: 'Lato',
       size: 16,
@@ -417,7 +478,7 @@ function buildPlot1(res) {
 function buildPlot2(res) {
   console.log(res);
   var trace2 = {
-    // no histograma so √© x ou √© y.
+    // no histograma so È x ou È y.
 		x: [],
 		//y: [],
     name: gettext('Histogram of the pendulum periods'),
@@ -447,7 +508,7 @@ function buildPlot2(res) {
 
     var layout = {
       title: gettext('Histogram of the pendulum periods'),
-      height: 500, // os valores s√£o todos em pixels
+      height: 500, // os valores s„o todos em pixels
       bargap: 0.05, 
       bargroupgap: 0.2,
      
@@ -516,7 +577,7 @@ function buildPlot3(res) {
 
     var layout = {
       title: gettext('Period vs. number of samples'),
-      height: 500, // os valores s√£o todos em pixels
+      height: 500, // os valores s„o todos em pixels
       font: {
       family: 'Lato',
       size: 16,
@@ -560,6 +621,7 @@ function set_reset() {
     window.location.href = location;
     });
     }
+
 
 
 
