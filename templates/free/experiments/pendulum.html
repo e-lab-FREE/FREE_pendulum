@@ -153,7 +153,7 @@
                 <div class="ui vertical divider"></div>
                 <div class="column">
                     <h2>{% trans 'Video stream '%}</h2>
-                    <div id="stream"></div>
+                    <!-- <div id="stream"></div>-->
                 </div>
             </div>
             <div class="ui two column stackable center aligned grid segment">
@@ -312,7 +312,8 @@
         var selectedStream =  document.getElementById('video-config').textContent;
         server = "http://elab1.ist.utl.pt:8088/janus";
     </script>
-
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/8.0.0/adapter.min.js" ></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
     <script type="text/javascript" src="{% static 'free/js/janus.js' %}" ></script>
     <script type="text/javascript" src="{% static 'free/js/streaming_simple.js' %}"></script>
     <script src="{% static 'free/js/tab_.js' %}"></script>
