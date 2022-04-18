@@ -2,91 +2,53 @@
 {% load static %}
 {% load i18n %}
 
-{% block title %} {% trans 'Pendulum' %} {% endblock %}
 
 {% block head %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.6.4/components/range.min.css">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.4/components/slider.css">
-    <style>
-        /* Chrome, Safari, Edge, Opera */
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
-        }
-        
-        /* Firefox */
-        input[type=number] {
-          -moz-appearance: textfield;
-        }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" type="text/css"/>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.6.4/components/range.min.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.4/components/slider.css">
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.18/css/dataTables.semanticui.min.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fomantic-ui/2.8.8/semantic.min.css">
-	<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.semanticui.min.css">
-	<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.semanticui.min.css">
-
-        
+    {{ block.super }}
 {% endblock %}  
 
-{% block tabheaders %}
- <a class="item" data-tab="configuration">{% trans 'Configuration'%}</a>
-    {% if final_result.id != None %}
-      <a class="item " data-tab="results">{% trans 'Results'%}</a>
-    {% else %}  
-      <a class="item " data-tab="execution">{% trans 'Execution'%}</a>
-    {% endif %} 
-
-{% endblock %}
-{% block tabs %}
-     <!-- Begin of the configuration tab-->
-   <div  class="ui bottom attached tab segment"  data-tab="configuration">
+{% block configtab %}
+<!-- Begin of the configuration tab-->
     
     <div class="ui equal width  aligned padded grid" >
-      <div class="row">
-        <div class="column ">
-          <p class="ui huge header">{% trans 'Pendulum configuration data'%}</p>
-         </div>
-          <div class="column ">
-            <div class="inline fields">
-                <div class="field">
-                    <label>{% trans ' Apparatus: ' %}</label>
-                    <label id="apparatus-dt"> </label> 
-                    <label>{% trans '  / Protocol: ' %}</label>
-                    <label id="protocol-dt"> </label> 
+        <div class="row">
+            <div class="column ">
+
+            </div>
+            <div class="column ">
+                <div class="inline fields">
+                    <div class="field">
+                        <label>{% trans ' Apparatus: ' %}</label>
+                        <label id="apparatus-dt"> </label> 
+                        <label>{% trans '  / Protocol: ' %}</label>
+                        <label id="protocol-dt"> </label> 
+                    </div>
+                </div>
+                <div class="inline fields">
+                    <div class="field">
+                        <label style="padding-right:10px">{% trans 'Name of execution:' %} </label>
+                        <div class="ui input" >
+                            <input type="text" id="name-of-exection"  placeholder="New Execution">
+                        </div>
+                        {% if final_result.id == None %}
+                        {% else %}
+                            <div class="ui blue button" onclick="save_name()">{% trans 'Save'%}</div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-            <div class="inline fields">
-                <div class="field">
-                    <label style="padding-right:10px">{% trans 'Name of execution:' %} </label>
-                      <div class="ui input" >
-                        <input type="text" id="name-of-exection"  placeholder="New Execution">
-                      </div>
-                      {% if final_result.id == None %}
-                      {% else %}
-                        <div class="ui blue button" onclick="save_name()">{% trans 'Save'%}</div>
-                      {% endif %}
-                </div>
-                <!--<div class="field">
-                    <div class="ui blue button">Test</div>
-                </div>-->
-            </div>
-          </div>
         </div>
-	
-       </div>
-       <div class="ui divider"></div>        
-       <div id="configuration-input" class="ui equal width center aligned padded grid">
-  	    <div class="row">
-              <div class="column">
+    </div>
+
+    <div class="ui divider"></div>        
+    <div id="configuration-input" class="ui equal width center aligned padded grid">
+        <div class="row">
+            <div class="column">
                 <legend> <h3>{% trans 'Initial Displacement (cm)'%}</h3></legend>
                 <div class="ui segment">
                     {% if final_result.id == None %}
                         <div class="ui labeled range "  id="range1" ></div>
-                        <br></br>
+                        <br>
                         <div class="ui input" >
                             <input  type="number" id="deltaX" onchange="disableButton()">
                         </div>
@@ -96,11 +58,11 @@
                         <div class="ui input">
                             <input  type="number" id="deltaX" disabled>
                         </div>
-  
+
                     {% endif %}
                 </div>
-              </div>
-              <div class="column">
+            </div>
+            <div class="column">
                 <legend><h3>{% trans 'Number of Samples N'%}</h3></legend>
                 <div class="ui segment">
                     {% if final_result.id == None %}
@@ -117,13 +79,15 @@
                         </div>
                     {% endif %}    
                 </div>
-              </div>
-           </div>
-           <div class="ui hidden divider"></div>
-           <div class="row">   
-                <div class="column">
+            </div>
+        </div>
+        <div class="ui hidden divider"></div>
+        <div class="row">   
+            <div class="column">
                 {% if final_result.id == None %}
-                    <div class="ui blue button" onclick="queue(config_input)">{% trans 'Save'%}</div>
+                    <div class="ui blue button" onclick="queue(config_input)">
+                        {% trans 'Save'%}
+                    </div>
                     {% comment %} <a href="execution">  {% endcomment %}
                     <div class="ui disabled green button" onclick="start()" id="startButton">{% trans 'Submit'%}</div>
                     {% comment %} </a> {% endcomment %}
@@ -131,114 +95,103 @@
                 {% else %}
 
                 {% endif %}
-                </div>
-           </div>   
-       </div>
+            </div>
+        </div>   
     </div>
-    <!-- End of the configuration tab-->
-
-    <!-- Begin of the execution tab-->
-    {% if final_result.id == None %}
-        <div class="ui bottom attached tab segment" data-tab="execution" id="cena">
-            <div class="ui two column stackable center aligned grid segment" >
-                <div class="column">
-                    <div style="width: 550px; height: 500px" id="myplot"></div>
-                    {% comment %} <select id="plotselect" onchange="findplot()" >
-                            <option value="trace1">plot1</option>
-                            <option value="trace2">trace2</option>
-                            <option value="trace3">trace3</option>
-                            <option value="All">All</option>
-                    </select> {% endcomment %}
-                </div>
-                <div class="ui vertical divider"></div>
-                <div class="column">
-                    <h2>{% trans 'Video stream '%}</h2>
-                    <!-- <div id="stream"></div>-->
-                </div>
-            </div>
-            <div class="ui two column stackable center aligned grid segment">
-                <div class="column">
-                    <div style="width: 550px; height: 500px" id="myplot1"></div>
-                </div>
-                <div class="ui vertical divider"></div>
-                <div class="column">
-                    <div style="width: 550px; height: 500px" id="myplot2"></div>
-                </div>
-            </div>
-            <table id="table_result_runtime" class="ui celled table" style="width:100%">
-            <thead>
-                <tr>
-                    <th>{% trans "Sample Number" %}</th>
-                    <th>{% trans "Period [s]" %}</th>
-                    <th>{% trans "g [m/s^2]" %}</th>
-                    <th>{% trans "Velocity [m/s]" %}</th>
-                    <th>{% trans "Temperature [ºC]" %}</th>
-                </tr>
-            </thead>
-            <tbody id="table_result">
-            </tbody>
-        </table>
-        </div>
-    {% else %}
-    <!-- End of the execution tab-->
-
-    <!-- Begin of the results tab-->
-    
-        <div class="ui bottom attached tab segment" data-tab="results" id="cena1">
-            <div class="ui two column stackable center aligned grid segment" >
-                <div class="column">
-                    <div style="width: 550px; height: 500px" id="myplot"></div>
-                    {% comment %} <select id="plotselect" onchange="findplot()" >
-                            <option value="trace1">plot1</option>
-                            <option value="trace2">trace2</option>
-                            <option value="trace3">trace3</option>
-                            <option value="All">All</option>
-                    </select> {% endcomment %}
-                </div>
-                <div class="ui vertical divider"></div>
-                <div class="column">
-                    <figure class="">
-                        <img src="{% static 'free/images/pendulum.png' %}" alt=""  width="100%">
-                    </figure>
-                </div>
-            </div>
-            <div class="ui two column stackable center aligned grid segment">
-                <div class="column">
-                    <div style="width: 550px; height: 500px" id="myplot1"></div>
-                </div>
-                <div class="ui vertical divider"></div>
-                <div class="column">
-                    <div style="width: 550px; height: 500px" id="myplot2"></div>
-                </div>
-            </div>
-        <table id="table_result_1" class="ui celled padded table"  cellspacing="0"  style="width:100%">
-            <thead>
-                <tr>
-                    <th>{% trans "Sample Number" %}</th>
-                    <th>{% trans "Period [s]" %}</th>
-                    <th>{% trans "g [m/s^2]" %}</th>
-                    <th>{% trans "Velocity [m/s]" %}</th>
-                    <th>{% trans "Temperature [ºC]" %}</th>
-                </tr>
-                </thead>
-                <tbody>
-                    {% for item in final_result.value  %}
-                        <tr>
-                            <td> {{ item.Sample_number}} </td>
-                            <td> {{ item.Val1}} </td>
-                            <td> {{ item.Val2}} </td>
-                            <td> {{ item.Val3}} </td>
-                            <td> {{ item.Val4}} </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-		
-		
-    {% endif %}
-    <!-- End of the results tab-->
+<!-- End of the configuration tab-->
 {% endblock %}
+
+
+
+<!-- Begin of the execution tab-->
+{% block excutiontab %}
+    <div class="ui two column stackable center aligned grid segment" >
+        <div class="column">
+            <div style="width: 550px; height: 500px" id="myplot"></div>
+            {% comment %} <select id="plotselect" onchange="findplot()" >
+                    <option value="trace1">plot1</option>
+                    <option value="trace2">trace2</option>
+                    <option value="trace3">trace3</option>
+                    <option value="All">All</option>
+            </select> {% endcomment %}
+        </div>
+    </div>
+    <div class="ui two column stackable center aligned grid segment">
+        <div class="column">
+            <div style="width: 550px; height: 500px" id="myplot1"></div>
+        </div>
+        <div class="ui vertical divider"></div>
+        <div class="column">
+            <div style="width: 550px; height: 500px" id="myplot2"></div>
+        </div>
+    </div>
+    <table id="table_result_runtime" class="ui celled table" style="width:100%">
+        <thead>
+            <tr>
+                <th>{% trans "Sample Number" %}</th>
+                <th>{% trans "Period [s]" %}</th>
+                <th>{% trans "g [m/s^2]" %}</th>
+                <th>{% trans "Velocity [m/s]" %}</th>
+                <th>{% trans "Temperature [ºC]" %}</th>
+            </tr>
+        </thead>
+        <tbody id="table_result">  </tbody>
+    </table>
+{% endblock %}   
+<!-- End of the execution tab-->
+
+<!-- Begin of the results tab-->
+{% block resultstab %}
+
+    <div class="column">
+        <div style="width: 550px; height: 500px" id="myplot"></div>
+        {% comment %} <select id="plotselect" onchange="findplot()" >
+                <option value="trace1">plot1</option>
+                <option value="trace2">trace2</option>
+                <option value="trace3">trace3</option>
+                <option value="All">All</option>
+        </select> {% endcomment %}
+    </div>
+    <div class="ui vertical divider"></div>
+    <div class="column">
+        <figure class="">
+            <img src="{% static 'free/images/pendulum.png' %}" alt=""  width="100%">
+        </figure>
+    </div>
+    <div class="ui two column stackable center aligned grid segment">
+        <div class="column">
+            <div style="width: 550px; height: 500px" id="myplot1"></div>
+        </div>
+        <div class="ui vertical divider"></div>
+        <div class="column">
+            <div style="width: 550px; height: 500px" id="myplot2"></div>
+        </div>
+    </div>
+    <table id="table_result_1" class="ui celled padded table"  cellspacing="0"  style="width:100%">
+        <thead>
+            <tr>
+                <th>{% trans "Sample Number" %}</th>
+                <th>{% trans "Period [s]" %}</th>
+                <th>{% trans "g [m/s^2]" %}</th>
+                <th>{% trans "Velocity [m/s]" %}</th>
+                <th>{% trans "Temperature [ºC]" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in final_result.value  %}
+                <tr>
+                    <td> {{ item.Sample_number}} </td>
+                    <td> {{ item.Val1}} </td>
+                    <td> {{ item.Val2}} </td>
+                    <td> {{ item.Val3}} </td>
+                    <td> {{ item.Val4}} </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}   
+		
+
 
 {% block script %}
     <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
@@ -308,10 +261,6 @@
 
     </script>
 
-    <script>
-        var selectedStream =  document.getElementById('video-config').textContent;
-        server = "http://elab1.ist.utl.pt:8088/janus";
-    </script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/8.0.0/adapter.min.js" ></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
     <script type="text/javascript" src="{% static 'free/js/janus.js' %}" ></script>
@@ -323,4 +272,5 @@
     <script src="{% static 'free/js/export_table_pendulum.js' %}"></script>
 
 {% endblock%}
+
 
