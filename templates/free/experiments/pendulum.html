@@ -143,20 +143,16 @@
 <!-- Begin of the results tab-->
 {% block resultstab %}
 
-    <div class="column">
-        <div style="width: 550px; height: 500px" id="myplot"></div>
-        {% comment %} <select id="plotselect" onchange="findplot()" >
-                <option value="trace1">plot1</option>
-                <option value="trace2">trace2</option>
-                <option value="trace3">trace3</option>
-                <option value="All">All</option>
-        </select> {% endcomment %}
-    </div>
-    <div class="ui vertical divider"></div>
-    <div class="column">
-        <figure class="">
-            <img src="{% static 'free/images/pendulum.png' %}" alt=""  width="100%">
-        </figure>
+    <div class="ui two column stackable center aligned grid segment" >
+        <div class="column">
+            <div style="width: 550px; height: 500px" id="myplot"></div>
+            {% comment %} <select id="plotselect" onchange="findplot()" >
+                    <option value="trace1">plot1</option>
+                    <option value="trace2">trace2</option>
+                    <option value="trace3">trace3</option>
+                    <option value="All">All</option>
+            </select> {% endcomment %}
+        </div>
     </div>
     <div class="ui two column stackable center aligned grid segment">
         <div class="column">

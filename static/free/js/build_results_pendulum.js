@@ -59,14 +59,22 @@ function Show_data(){
 }
 
 
+function cleanPlots(){
+  console.log("Clean all plots ");
+  Plotly.purge('myplot');
+  Plotly.purge('myplot1');
+  Plotly.purge('myplot2');
+}
+
 function buildGraph(response){
   console.log('ola', response.data[0].value);
   res = Object.keys(response.data[0].value);
   buildPlot1(res);
   buildPlot2(res);  // grafico de temperatura não 
   buildPlot3(res);
+
   last_result_id = response.data[0].id+1
-  frist = 1;
+  return 1;
 }
 
 function plotRunTime(response){

@@ -42,6 +42,7 @@ function getCookie(name)
   var dc = document.cookie;
   var prefix = name + "=";
   var begin = dc.indexOf("; " + prefix);
+  console.log("Begin: "+begin);
   if (begin == -1) 
   {
     begin = dc.indexOf(prefix);
@@ -51,6 +52,7 @@ function getCookie(name)
   {
     begin += 2;
     var end = document.cookie.indexOf(";", begin);
+    console.log( "Final: "+end);
     if (end == -1) 
     {
       end = dc.length;
