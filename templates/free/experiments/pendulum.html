@@ -212,19 +212,25 @@
         // You can access apparatus_type config like this
         config = JSON.parse(document.getElementById('execution-config').textContent);
         console.log(config);
-        document.getElementById('apparatus-dt').innerHTML = String(config.apparatus);
-        document.getElementById('protocol-dt').innerHTML = String(config.protocol.id);
-        if (config.name != '')
-            document.getElementById('name-of-exection').value = config.name;
-        console.log(Object.keys(config.protocol.config.properties).length);
+        protocol = JSON.parse(document.getElementById('protocol-config').textContent)
+        console.log(protocol)
+        console.log({{apparatus_id}})
+
+
+
+        //document.getElementById('apparatus-dt').innerHTML = String(config.apparatus);
+        //document.getElementById('protocol-dt').innerHTML = String(config.protocol.id);
+        //if (config.name != '')
+        //    document.getElementById('name-of-exection').value = config.name;
+        //console.log(Object.keys(config.protocol.config.properties).length);
 
         var exp_parameters = [];
-        if (config.protocols !== null && Object.keys(config.protocol.config.properties).length > 1) {
-            for (let ii = 0; ii<Object.keys(config.protocol.config.properties).length;ii++ )
+        if (protocol.properties !== null && Object.keys(protocol.properties).length > 1) {
+            for (let ii = 0; ii<Object.keys(protocol.properties).length;ii++ )
             {
-                key = Object.keys(config.protocol.config.properties)[ii];
-                console.log(config.protocol.config.properties[key]);
-                exp_parameters[ii] = {"min_val": config.protocol.config.properties[key].minimum,"max_val":config.protocol.config.properties[key].maximum,"step": config.protocol.config.properties[key].multipleOf,"start": config.protocol.config.properties[key].default,"nome": key};
+                key = Object.keys(protocol.properties)[ii];
+                console.log(protocol.properties[key]);
+                exp_parameters[ii] = {"min_val": protocol.properties[key].minimum,"max_val":protocol.properties[key].maximum,"step": protocol.properties[key].multipleOf,"start": protocol.properties[key].default,"nome": key};
             };
 
             console.log(exp_parameters);
@@ -251,7 +257,7 @@
             console.log("No execution in URL, this is probably a new execution");
             // Here you will probably create the execution through the REST API
         }
-        console.log({{object.protocol_id}})
+        console.log({{protocol_id}})
         const config_input = new ConfigurationInput("configuration-input");
 
 
