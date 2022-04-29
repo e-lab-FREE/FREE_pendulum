@@ -75,8 +75,8 @@ msgstr ""
 
 #: templates/free/experiments/pendulum.html:114
 #: templates/free/experiments/pendulum.html:161
-msgid "Velocity [m/s]"
-msgstr "Velocidade [m/s]"
+msgid "Velocity [cm/s]"
+msgstr "Velocidade [cm/s]"
 
 #: templates/free/experiments/pendulum.html:115
 #: templates/free/experiments/pendulum.html:162

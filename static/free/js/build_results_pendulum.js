@@ -207,7 +207,7 @@ function buildPlot1(res) {
                  //rangeslider: {}
             },
       yaxis: {
-            title: gettext('Linear velocity [m/s]'),
+            title: gettext('Linear velocity [cm/s]'),
             fixedrange: true,
             titlefont:{
                   color: 'black',

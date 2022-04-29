@@ -28,8 +28,8 @@ msgid "# Samples"
 msgstr "Número de amostras"
 
 #: static/free/js/plotly_results.js:391
-msgid "Linear velocity [m/s]"
-msgstr "Velocidade Linear [m/s]"
+msgid "Linear velocity [cm/s]"
+msgstr "Velocidade Linear [cm/s]"
 
 #: static/free/js/plotly_results.js:419 static/free/js/plotly_results.js:445
 msgid "Histogram of the pendulum periods"
