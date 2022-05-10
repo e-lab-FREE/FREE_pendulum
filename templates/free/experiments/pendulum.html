@@ -30,10 +30,7 @@
                         <div class="ui input" >
                             <input type="text" id="name-of-exection"  placeholder="New Execution">
                         </div>
-                        {% if final_result.id == None %}
-                        {% else %}
-                            <div class="ui blue button" onclick="save_name()">{% trans 'Save'%}</div>
-                        {% endif %}
+                            <div class="ui blue button" style="display: none;" onclick="save_name()" id= "saveNameButton">{% trans 'Save'%}</div>
                     </div>
                 </div>
             </div>
