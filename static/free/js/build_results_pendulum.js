@@ -46,14 +46,14 @@ $(".menu .item").click(function() {
 
 function Show_data(){
   result_data = JSON.parse(document.getElementById('final-result').textContent);
-  buildPlot1(0);
-  buildPlot2(0);
-  buildPlot3(0);
+  buildPlot1(0,'resultstab-myplot');
+  buildPlot2(0,'resultstab-myplot1');
+  buildPlot3(0,'resultstab-myplot2');
   receive_error_velocity = 0.1;
   receive_error_period = 0.0005;//response.data.value.e_period;
-  Plotly.extendTraces('myplot', {x: [result_data.value.map(data => data.Sample_number)],y: [result_data.value.map(data => data.Val3)],'error_y.array': [Array(result_data.value.length).fill(receive_error_velocity)]}, [0]);
-  Plotly.extendTraces('myplot1', {x:  [result_data.value.map(data => data.Val1)]}, [0]);
-  Plotly.extendTraces('myplot2', {x: [result_data.value.map(data => data.Sample_number)],y: [result_data.value.map(data => data.Val1)],'error_y.array': [Array(result_data.value.length).fill(receive_error_period)]}, [0]);
+  Plotly.extendTraces('resultstab-myplot', {x: [result_data.value.map(data => data.Sample_number)],y: [result_data.value.map(data => data.Val3)],'error_y.array': [Array(result_data.value.length).fill(receive_error_velocity)]}, [0]);
+  Plotly.extendTraces('resultstab-myplot1', {x:  [result_data.value.map(data => data.Val1)]}, [0]);
+  Plotly.extendTraces('resultstab-myplot2', {x: [result_data.value.map(data => data.Sample_number)],y: [result_data.value.map(data => data.Val1)],'error_y.array': [Array(result_data.value.length).fill(receive_error_period)]}, [0]);
 
 
 }
@@ -69,9 +69,9 @@ function cleanPlots(){
 function buildGraph(response){
   console.log('ola', response.data[0].value);
   res = Object.keys(response.data[0].value);
-  buildPlot1(res);
-  buildPlot2(res);  // grafico de temperatura não 
-  buildPlot3(res);
+  buildPlot1(res,'myplot');
+  buildPlot2(res,'myplot1');  // grafico de temperatura não 
+  buildPlot3(res,'myplot2');
 
   last_result_id = response.data[0].id+1
   return 1;
@@ -149,7 +149,7 @@ var selectorOptions = {
 };
 
 
-function buildPlot1(res) {
+function buildPlot1(res, plotdiv) {
 
   console.log(res);
   var trace1 = {
@@ -217,7 +217,7 @@ function buildPlot1(res) {
             }
      };
 
-     Plotly.newPlot('myplot', output_data, layout);
+     Plotly.newPlot(plotdiv, output_data, layout);
    
 }
 
@@ -229,7 +229,7 @@ function buildPlot1(res) {
 
 ///////////////////
 
-function buildPlot2(res) {
+function buildPlot2(res,plotdiv) {
   console.log(res);
   var trace2 = {
     // no histograma so é x ou é y.
@@ -292,12 +292,12 @@ function buildPlot2(res) {
             }
      };
 
-     Plotly.newPlot('myplot1', output_data, layout);
+     Plotly.newPlot(plotdiv, output_data, layout);
    
 }
 
 
-function buildPlot3(res) {
+function buildPlot3(res,plotdiv) {
   console.log(res);
   var trace3 = {
 		x: [],
@@ -358,7 +358,7 @@ function buildPlot3(res) {
             }
      };
 
-     Plotly.newPlot('myplot2', output_data, layout);
+     Plotly.newPlot(plotdiv, output_data, layout);
    
     }
     

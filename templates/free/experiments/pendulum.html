@@ -47,13 +47,13 @@
                 <legend> <h3>{% trans 'Initial Displacement (cm)'%}</h3></legend>
                 <div class="ui segment">
                     {% if final_result.id == None %}
-                        <div class="ui labeled range "  id="range1" ></div>
+                        <div class="ui labeled range "  id="range-deltaX" ></div>
                         <br>
                         <div class="ui input" >
                             <input  type="number" id="deltaX" onchange="disableButton()">
                         </div>
                     {% else %}
-                        <div class="ui disabled range" id="range1"></div>
+                        <div class="ui disabled range" id="range-deltaX"></div>
                         <br></br>
                         <div class="ui input">
                             <input  type="number" id="deltaX" disabled>
@@ -66,13 +66,13 @@
                 <legend><h3>{% trans 'Number of Samples N'%}</h3></legend>
                 <div class="ui segment">
                     {% if final_result.id == None %}
-                        <div class="ui labeled range" id="range2" ></div>
+                        <div class="ui labeled range" id="range-samples" ></div>
                         <br></br>
                         <div class="ui input">
                             <input  type="number" id="samples" onchange="disableButton()">
                         </div>
                     {% else %}
-                        <div class="ui disabled  range" id="range2"></div>
+                        <div class="ui disabled  range" id="range-samples"></div>
                         <br></br>
                         <div class="ui input">
                             <input t type="number" id="samples" disabled>
@@ -84,17 +84,11 @@
         <div class="ui hidden divider"></div>
         <div class="row">   
             <div class="column">
-                {% if final_result.id == None %}
-                    <div class="ui blue button" onclick="queue(config_input)">
-                        {% trans 'Save'%}
-                    </div>
-                    {% comment %} <a href="execution">  {% endcomment %}
-                    <div class="ui disabled green button" onclick="start()" id="startButton">{% trans 'Submit'%}</div>
-                    {% comment %} </a> {% endcomment %}
-                    <div class="ui red button">{% trans 'Clear All'%}</div>
-                {% else %}
-
-                {% endif %}
+                <div class="ui blue button" onclick="queue(config_input)" id="saveButton">{% trans 'Save'%}</div>
+                <div class="ui disabled green button" onclick="start()" id="startButton">{% trans 'Submit'%}</div>
+                <div class="ui red button" id="clearButton" onclick="restInputValeus()">{% trans 'Clear All'%}</div>
+                <div class="ui green button" style="display: none;" id="createNew" onclick="goToCreateExecuiton()">{% trans 'Create New Execution'%}</div>
+                <div class="ui red button" style="display: none;" id="deleteButton" onclick="deleteExecution()">{% trans 'Delete'%}</div>
             </div>
         </div>   
     </div>
@@ -145,7 +139,7 @@
 
     <div class="ui two column stackable center aligned grid segment" >
         <div class="column">
-            <div style="width: 550px; height: 500px" id="myplot"></div>
+            <div style="width: 550px; height: 500px" id="resultstab-myplot"></div>
             {% comment %} <select id="plotselect" onchange="findplot()" >
                     <option value="trace1">plot1</option>
                     <option value="trace2">trace2</option>
@@ -156,11 +150,11 @@
     </div>
     <div class="ui two column stackable center aligned grid segment">
         <div class="column">
-            <div style="width: 550px; height: 500px" id="myplot1"></div>
+            <div style="width: 550px; height: 500px" id="resultstab-myplot1"></div>
         </div>
         <div class="ui vertical divider"></div>
         <div class="column">
-            <div style="width: 550px; height: 500px" id="myplot2"></div>
+            <div style="width: 550px; height: 500px" id="resultstab-myplot2"></div>
         </div>
     </div>
     <table id="table_result_1" class="ui celled padded table"  cellspacing="0"  style="width:100%">
@@ -239,7 +233,12 @@
         execution_element = JSON.parse(document.getElementById('execution-config').textContent);
         if (execution_element.status === 'F') {
             // The execution is present
-            
+            document.getElementById("createNew").style.display = null;
+            document.getElementById("deleteButton").style.display = null;
+            document.getElementById("saveNameButton").style.display = null;
+            document.getElementById("saveButton").style.display = "none";
+            document.getElementById("startButton").style.display = "none";
+            document.getElementById("clearButton").style.display = "none";
             // console.log(execution.config)
             final_result = document.getElementById('final-result');
             finalresult = JSON.parse(final_result.textContent);
@@ -251,6 +250,11 @@
             else{
 
             }
+        }
+        else if(execution_element.status === 'C'){
+            exp_parameters[0].start = execution_element.config.deltaX;
+            exp_parameters[1].start = execution_element.config.samples;
+            document.getElementById('clearButton').setAttribute('onclick','deleteExecution()');
         }
         else
         {

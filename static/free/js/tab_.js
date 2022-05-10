@@ -18,11 +18,11 @@ if (exp_parameters.length > 0) {
 
 
 $('#'+exp_parameters[0].nome).change(function() {
-  $("#range1").range('set value', $(this).val())
+  $("#range-"+exp_parameters[0].nome).range('set value', $(this).val())
 });
 
 
- $('#range1').range({
+ $('#range-'+exp_parameters[0].nome).range({
      min: parseInt (exp_parameters[0].min_val),
      max: parseInt (exp_parameters[0].max_val),
      step: parseInt (exp_parameters[0].step),
@@ -45,11 +45,11 @@ $('#'+exp_parameters[0].nome).change(function() {
       }
       if (n < parseInt (exp_parameters[0].min_val)){
         $('#'+exp_parameters[0].nome).val(parseInt (exp_parameters[0].min_val));
-        $("#range1").range('set value', parseInt (exp_parameters[0].min_val))
+        $("#range-"+exp_parameters[0].nome).range('set value', parseInt (exp_parameters[0].min_val))
       }
       if (n > parseInt (exp_parameters[0].max_val)){
         $('#'+exp_parameters[0].nome).val(parseInt (exp_parameters[0].max_val));
-        $("#range1").range('set value', parseInt (exp_parameters[0].max_val))
+        $("#range-"+exp_parameters[0].nome).range('set value', parseInt (exp_parameters[0].max_val))
       }
 
 		
@@ -63,11 +63,11 @@ $('#'+exp_parameters[0].nome).change(function() {
 if (exp_parameters.length > 1) {
  // Number of samples
  $('#'+exp_parameters[1].nome).change(function() {
-  $("#range2").range('set value', $(this).val())
+  $("#range-"+exp_parameters[1].nome).range('set value', $(this).val())
 });
 
 
- $('#range2').range({
+ $('#range-'+exp_parameters[1].nome).range({
      min: parseInt (exp_parameters[1].min_val),
      max: parseInt (exp_parameters[1].max_val),
      step: parseInt (exp_parameters[1].step),
@@ -90,11 +90,11 @@ if (exp_parameters.length > 1) {
       }
       if (n < parseInt (exp_parameters[1].min_val)){
         $('#'+exp_parameters[1].nome).val(parseInt (exp_parameters[1].min_val));
-        $("#range2").range('set value', parseInt (exp_parameters[1].min_val))
+        $("#range-"+exp_parameters[1].nome).range('set value', parseInt (exp_parameters[1].min_val))
       }
       if (n > parseInt (exp_parameters[1].max_val)){
         $('#'+exp_parameters[1].nome).val(parseInt (exp_parameters[1].max_val));
-        $("#range2").range('set value', parseInt (exp_parameters[1].max_val))
+        $("#range-"+exp_parameters[1].nome).range('set value', parseInt (exp_parameters[1].max_val))
       }
 
 		
