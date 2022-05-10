@@ -64,6 +64,9 @@ function cleanPlots(){
   Plotly.purge('myplot');
   Plotly.purge('myplot1');
   Plotly.purge('myplot2');
+  Plotly.purge('resultstab-myplot');
+  Plotly.purge('resultstab-myplot1');
+  Plotly.purge('resultstab-myplot2');
 }
 
 function buildGraph(response){
@@ -90,41 +93,6 @@ function plotRunTime(response){
   Plotly.extendTraces('myplot2', {x: [[response.data[0].value.Sample_number]],y: [[response.data[0].value.Val1]],
   'error_y.array': [[receive_error_period]]}, [0]);
 }
-
- 
-
-
-
-
-
-// //// nao usado
-// function tablebind(response) {  
-//           if (obj.length > 0) {  
-
-//               var table = $("<table />");  
-//               table[0].border = "1";  
-
-//               var row$;  
-
-//               var columns = addAllColumnHeaders(["S"]);  
-//               for (var i = 0; i < data.length; i++)
-//                {  
-//                   row$ = $('<tr/>');  
-           
-//                   for (var colIndex = 0; colIndex < columns.length; colIndex++) 
-//                   {  
-//                       var cellValue = data[i][columns[colIndex]];  
-
-//                       if (cellValue == null) { cellValue = ""; }  
-
-//                       row$.append($('<td/>').html(cellValue));  
-//                   }  
-//                   $("#jsonTable").append(row$);  
-//               }      
-//           }  
-
-// }  
-
 
 
 
@@ -366,15 +334,6 @@ function buildPlot3(res,plotdiv) {
 
 
 
-function set_reset() {
-  var resetBtn = document.getElementById('delete_conf');
-  var location = window.location.href.split('?')[0];
-  
-    resetBtn.addEventListener('click', function(event) {
-    console.log('Reseting values of R or iteration...');
-    window.location.href = location;
-    });
-    }
 
 
 
