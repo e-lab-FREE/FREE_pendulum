@@ -51,9 +51,9 @@ function Show_data(){
   buildPlot3(0,'resultstab-myplot2');
   receive_error_velocity = 0.1;
   receive_error_period = 0.0005;//response.data.value.e_period;
-  Plotly.extendTraces('resultstab-myplot', {x: [result_data.value.map(data => data.Sample_number)],y: [result_data.value.map(data => data.Velocity)],'error_y.array': [Array(result_data.value.length).fill(receive_error_velocity)]}, [0]);
-  Plotly.extendTraces('resultstab-myplot1', {x:  [result_data.value.map(data => data.Period)]}, [0]);
-  Plotly.extendTraces('resultstab-myplot2', {x: [result_data.value.map(data => data.Sample_number)],y: [result_data.value.map(data => data.Period)],'error_y.array': [Array(result_data.value.length).fill(receive_error_period)]}, [0]);
+  Plotly.extendTraces('resultstab-myplot', {x: [result_data.value.map(data => data.Sample_number)],y: [result_data.value.map(data => data.Val3)],'error_y.array': [Array(result_data.value.length).fill(receive_error_velocity)]}, [0]);
+  Plotly.extendTraces('resultstab-myplot1', {x:  [result_data.value.map(data => data.Val1)]}, [0]);
+  Plotly.extendTraces('resultstab-myplot2', {x: [result_data.value.map(data => data.Sample_number)],y: [result_data.value.map(data => data.Val1)],'error_y.array': [Array(result_data.value.length).fill(receive_error_period)]}, [0]);
 
 
 }
@@ -83,11 +83,11 @@ function plotRunTime(response){
   receive_error_velocity = 0.1;
   receive_error_period = 0.0005;//response.data.value.e_period;
   
-  Plotly.extendTraces('myplot', {x: [[response.data[0].value.Sample_number]],y: [[response.data[0].value.Velocity]],
+  Plotly.extendTraces('myplot', {x: [[response.data[0].value.Sample_number]],y: [[response.data[0].value.Val3]],
     'error_y.array': [[ receive_error_velocity ]]}, [0]);
   last_result_id = response.data[0].id+1
-  Plotly.extendTraces('myplot1', {x: [[response.data[0].value.Period]]}, [0]);
-  Plotly.extendTraces('myplot2', {x: [[response.data[0].value.Sample_number]],y: [[response.data[0].value.Period]],
+  Plotly.extendTraces('myplot1', {x: [[response.data[0].value.Val1]]}, [0]);
+  Plotly.extendTraces('myplot2', {x: [[response.data[0].value.Sample_number]],y: [[response.data[0].value.Val1]],
   'error_y.array': [[receive_error_period]]}, [0]);
 }
 

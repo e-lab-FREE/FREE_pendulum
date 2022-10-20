@@ -168,9 +168,10 @@
             {% for item in final_result.value  %}
                 <tr>
                     <td> {{ item.Sample_number}} </td>
-                    <td> {{ item.Period}} </td>
-                    <td> {{ item.Velocity}} </td>
-                    <td> {{ item.Temperature}} </td>
+                    <td> {{ item.Val1}} </td>
+                    {% comment %} <td> {{ item.Val2}} </td> {% endcomment %}
+                    <td> {{ item.Val3}} </td>
+                    <td> {{ item.Val4}} </td>
                 </tr>
             {% endfor %}
         </tbody>
