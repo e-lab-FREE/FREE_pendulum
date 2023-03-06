@@ -59,7 +59,7 @@
 <div class="ui grid stackable">
     <div class="row">
         <div class=" ten wide column">
-            <h3>Velocidade Linear vs Amostra</h3>
+            <h3>{% trans 'Histogram of the Period'%}</h3>
                 <div >
                     <canvas id="plot_period_histogram"></canvas>
                 </div>
@@ -69,13 +69,13 @@
     <div class="row">
         
         <div class="eight wide column">
-            <h3>Velocidade Linear vs Amostra</h3>
+            <h3>{% trans 'Sample vs Linear Velocity'%}</h3>
                 <div >
                     <canvas id="plot_sample_velocity"></canvas>
                 </div>
         </div>
         <div class="eight wide column">
-            <h3>Velocidade Linear vs Amostra</h3>
+            <h3>{% trans 'Sample vs Period'%}</h3>
                 <div >
                     <canvas id="plot_sample_period"></canvas>
                 </div>
@@ -88,7 +88,7 @@
             <tr>
                 <th id="Sample_number">{% trans "Sample Number" %}</th>
                 <th id="Val1">{% trans "Period [s]" %}</th>
-                <th id="Val2">{% trans "g [m/s^2]" %}</th>
+                <!--<th id="Val2">{% trans "g [m/s^2]" %}</th>-->
                 <th id="Val3">{% trans "Velocity [cm/s]" %}</th>
                 <th id="Val4">{% trans "Temperature [ºC]" %}</th>
             </tr>
@@ -114,6 +114,15 @@ function process_final_data(data_line){
 
 
 }
+
+function process_experiment_data(data){
+    process_experiment_data_default(data)
+}
+    
+function table_insert_partial_data(data){
+    table_insert_partial_data_default(data)
+}
+
 
 function process_partial_data(data_line){
     sample_number = parseInt(data_line.value.Sample_number) 
@@ -158,7 +167,6 @@ function on_save_experiment_UI(){
 
 
 
-
 function on_ready_experiment_UI(){
 
     configure_slider("samples")
@@ -189,8 +197,8 @@ function on_ready_experiment_UI(){
                         display: true, 
                         text: gettext('Linear velocity [cm/s]'),
                     },
-                    min: 8.5,
-                    max: 9.5,
+                    //min: 8.5,
+                    //max: 9.5,
                 },
                 x: {
                     title:{
